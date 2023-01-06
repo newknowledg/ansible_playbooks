@@ -1,0 +1,81 @@
+---
+- name: install packages
+  become: true
+  become_method: sudo
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ initial_packages }}"
+
+- name: make keyring dir
+  stat: 
+   path: "/etc/apt/keyrings/docker.gpg"
+  register: file_check
+
+- name: make keyring dir
+  become: true
+  become_method: sudo
+  shell: mkdir -p /etc/apt/keyrings
+  when: not file_check.stat.exists
+
+- name: download docker gpg keys
+  become: true
+  become_method: sudo
+  shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  when: not file_check.stat.exists
+
+- name: download kube gpg keys
+  become: true
+  become_method: sudo
+  shell: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: include docker repo
+  become: true
+  become_method: sudo
+  shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+- name: include kubernetes repo
+  become: true
+  become_method: sudo
+  shell: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+- name: turnoff swap
+  become: true
+  become_method: sudo
+  shell: swapoff -a
+
+- name: download kubeadm config
+  shell: curl -O -L https://raw.githubusercontent.com/newknowledg/kubelet-config/master/config.yaml
+
+- name: update cache
+  become: true
+  become_method: sudo
+  apt:   
+   update_cache: "True"
+
+- name: install kubernetes pakages
+  become: true
+  become_method: sudo
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ kube_packages }}"
+
+- name: container runtime prep 
+  become: true
+  become_method: sudo
+  shell: sudo rm /etc/containerd/config.toml
+
+- name: download containerd config
+  become: true
+  become_method: sudo
+  shell: curl -fsSLo /etc/containerd/config.toml https://raw.githubusercontent.com/newknowledg/kubelet-config/master/config.toml
+
+- name: restart containerd
+  become: true
+  become_method: sudo
+  shell: sudo systemctl restart containerd
+
+...

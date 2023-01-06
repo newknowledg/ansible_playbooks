@@ -1,0 +1,30 @@
+[0m[1mdata.xenorchestra_template.template: Reading...[0m[0m
+[0m[1mdata.xenorchestra_pool.pool: Reading...[0m[0m
+[0m[1mdata.xenorchestra_pool.pool: Read complete after 0s [id=f212dec4-4682-6045-6dae-1fe80229e66f][0m
+[0m[1mdata.xenorchestra_network.network: Reading...[0m[0m
+[0m[1mdata.xenorchestra_sr.sr: Reading...[0m[0m
+[0m[1mdata.xenorchestra_template.template: Read complete after 0s [id=ef89afef-6799-1040-05e1-2274044a15fa][0m
+[0m[1mdata.xenorchestra_sr.sr: Read complete after 0s [id=8fd11492-f4b9-762c-1583-373ff9b305e9][0m
+[0m[1mdata.xenorchestra_network.network: Read complete after 0s [id=06e1ffdc-30e9-66f7-f265-992376416c35][0m
+[0m[1mxenorchestra_vm.vm3: Refreshing state... [id=10b0e93f-bf34-edc5-c6fd-7b5387cc7ec7][0m
+[0m[1mxenorchestra_vm.vm: Refreshing state... [id=b2fdbcc3-41b6-2411-8136-f38691455290][0m
+[0m[1mxenorchestra_vm.vm2: Refreshing state... [id=ce20434c-92b2-f837-d490-95a188dcafd5][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mall-ipv4-ips-for-vm = tolist([
+  "192.168.3.192",
+])
+all-ipv4-ips-for-vm2 = tolist([
+  "192.168.3.194",
+])
+all-ipv4-ips-for-vm3 = tolist([
+  "192.168.3.159",
+])

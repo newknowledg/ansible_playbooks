@@ -1,0 +1,36 @@
+---
+- name: Update servers
+  hosts: kubernetes
+  roles:
+    - ./roles/update
+    - ./roles/kubernetes-prep
+
+- name: Change hostname master
+  hosts: kubernetes-master
+  become: "True"
+  become_method: sudo
+  tasks:
+    - name: hostname master
+      shell: hostnamectl set-hostname master
+
+- name: Change hostname worker1
+  hosts: kubernetes-worker1
+  become: "True"
+  become_method: sudo
+  tasks:
+    - name: hostname worker1
+      shell: hostnamectl set-hostname node1
+
+- name: Change hostname worker2
+  hosts: kubernetes-worker2
+  become: "True"
+  become_method: sudo
+  tasks:
+    - name: hostname worker2
+      shell: hostnamectl set-hostname node2
+
+- name: Install helm
+  hosts: kubernetes-master
+  roles:
+    - ./roles/helm-install
+...

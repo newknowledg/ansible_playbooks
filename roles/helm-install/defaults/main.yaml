@@ -1,0 +1,20 @@
+---
+initial_packages:
+  - vim
+  - curl
+  - wget
+  - ca-certificates
+  - apt-transport-https
+  - lsb-release
+
+kube_packages:
+  - kubelet
+  - kubeadm
+  - kubectl
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - containerd
+  - docker-compose-plugin
+...
+

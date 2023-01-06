@@ -1,0 +1,28 @@
+---
+- name: check gpg key
+  stat:
+   path: "/usr/share//keyrings/helm.gpg"
+  register: file_check
+
+- name: download helm gpg keys
+  become: true
+  become_method: sudo
+  shell: | 
+    curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+  when: not file_check.stat.exists
+
+- name: update cache
+  become: true
+  become_method: sudo
+  apt:   
+   update_cache: "True"
+
+- name: install kubernetes pakages
+  become: true
+  become_method: sudo
+  package:
+    name: helm
+    state: present
+
+...

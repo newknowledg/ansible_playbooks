@@ -1,0 +1,14 @@
+---
+- name: update server cache
+  become: true
+  become_method: sudo
+  apt:
+    update_cache: "True"
+
+- name: update server
+  become: true
+  become_method: sudo
+  apt:
+    name: "*"
+    state: latest
+...

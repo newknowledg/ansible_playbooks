@@ -1,0 +1,9 @@
+---
+- name: Update servers
+  hosts: 
+    - core
+    - kubernetes
+    - kubernetes-2
+  roles:
+    - ./roles/update
+...   
